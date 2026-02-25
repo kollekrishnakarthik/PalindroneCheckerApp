@@ -1,26 +1,17 @@
-import java.util.Scanner;
-
 public class PalindroneCheckerApp {
-
-    public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter a word:");
-        String input = scanner.nextLine();
-
-        String reversed = "";
-
-        for (int i = input.length() - 1; i >= 0; i--) {
-            reversed = reversed + input.charAt(i);
+    static void main(){
+        String str = "madam";
+        boolean isPalindrone = true;
+        for (int i=0; i<str.length()/ 2; i++) {
+            if (str.charAt(i) != str.charAt(str.length() -1 - i)) {
+                isPalindrone = false;
+                break;
+            }
         }
-
-        if (input.equalsIgnoreCase(reversed)) {
-            System.out.println("It is a Palindrome");
+        if (isPalindrone){
+            System.out.println(str +"is palindrine");
         } else {
-            System.out.println("Not a Palindrome");
+            System.out.println(str +"is not a palindrone");
         }
-
-        scanner.close();
     }
 }
