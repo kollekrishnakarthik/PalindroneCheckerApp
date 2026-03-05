@@ -1,56 +1,43 @@
-import java.util.Queue;
-import java.util.Stack;
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Scanner;
 
 public class PalindroneCheckerApp {
+
     public static void main(String[] args) {
-        String input = "racecar";
 
-        // Using Queue (FIFO - First In First Out)
-        Queue<Character> queue = new LinkedList<>();
-        for (char c : input.toCharArray()) {
-            queue.add(c);
-        }
+        Scanner scanner = new Scanner(System.in);
 
-        // Using Stack (LIFO - Last In First Out)
-        Stack<Character> stack = new Stack<>();
-        for (char c : input.toCharArray()) {
-            stack.push(c);
-        }
+        System.out.println("===== UC7: Deque-Based Optimized Palindrone Checker =====");
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
 
-        System.out.println("Input: " + input);
-        System.out.println("\nQueue (FIFO) Output:");
-        while (!queue.isEmpty()) {
-            System.out.print(queue.poll());
-        }
+        input = input.replaceAll("\\s+", "").toLowerCase();
 
-        System.out.println("\nStack (LIFO) Output:");
-        while (!stack.isEmpty()) {
-            System.out.print(stack.pop());
-        }
+        Deque<Character> deque = new ArrayDeque<>();
 
-        // Compare outputs for palindrone validation
-        System.out.println("\n\nPalindrone Check:");
-        Queue<Character> queueCheck = new LinkedList<>();
-        Stack<Character> stackCheck = new Stack<>();
-
-        for (char c : input.toCharArray()) {
-            queueCheck.add(c);
-            stackCheck.push(c);
+        for (int i = 0; i < input.length(); i++) {
+            deque.addLast(input.charAt(i));
         }
 
         boolean isPalindrone = true;
-        while (!queueCheck.isEmpty() && !stackCheck.isEmpty()) {
-            if (queueCheck.poll() != stackCheck.pop()) {
+
+        while (deque.size() > 1) {
+            char front = deque.removeFirst();
+            char rear = deque.removeLast();
+
+            if (front != rear) {
                 isPalindrone = false;
                 break;
             }
         }
 
         if (isPalindrone) {
-            System.out.println(input + " is a palindrone (Queue and Stack outputs match in reverse)");
+            System.out.println("Result: The string is a Palindrone ");
         } else {
-            System.out.println(input + " is not a palindrone");
+            System.out.println("Result: The string is NOT a Palindrone ");
         }
+
+        scanner.close();
     }
 }
