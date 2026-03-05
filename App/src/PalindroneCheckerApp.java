@@ -1,30 +1,22 @@
+import java.util.Stack;
 
-    public class PalindroneCheckerApp {
-        public static void main(String[] args) {
-            String str = "level";
+public class PalindroneCheckerStack {
+    public static boolean isPalindrone(String input) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
 
-            // Convert string to character array
-            char[] charArray = str.toCharArray();
-            boolean isPalindrone = true;
-
-            // Use two-pointer approach
-            int start = 0;
-            int end = charArray.length - 1;
-
-            while (start < end) {
-                if (charArray[start] != charArray[end]) {
-                    isPalindrone = false;
-                    break;
-                }
-                start++;
-                end--;
-            }
-
-            // Display result
-            if (isPalindrone) {
-                System.out.println(str + " is a palindrone.");
-            } else {
-                System.out.println(str + " is not a palindrone.");
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
+                return false;
             }
         }
+        return true;
     }
+
+    public static void main(String[] args) {
+        String test = "racecar";
+        System.out.println(test + " is palindrone? " + isPalindrone(test));
+    }
+}
