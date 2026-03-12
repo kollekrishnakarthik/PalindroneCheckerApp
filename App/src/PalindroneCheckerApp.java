@@ -1,36 +1,40 @@
 import java.util.Scanner;
 
-public class PalindroneCheckerApp {
+class PalindroneChecker {
 
-    public static boolean isPalindrone(String str, int start, int end) {
+    public boolean checkPalindrone(String str) {
 
-        if (start >= end) {
-            return true;
+        int start = 0;
+        int end = str.length() - 1;
+
+        while (start < end) {
+
+            if (str.charAt(start) != str.charAt(end))
+                return false;
+
+            start++;
+            end--;
         }
 
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        return isPalindrone(str, start + 1, end - 1);
+        return true;
     }
+}
+
+public class PalindroneCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter a string: ");
+        System.out.print("Enter string: ");
         String input = sc.nextLine();
 
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+        PalindroneChecker checker = new PalindroneChecker();
 
-        boolean result = isPalindrone(normalized, 0, normalized.length() - 1);
-
-        if (result) {
-            System.out.println("The given string \"" + input + "\" is a Palindrone (ignoring case and spaces).");
-        } else {
-            System.out.println("The given string \"" + input + "\" is NOT a Palindrone (ignoring case and spaces).");
-        }
+        if (checker.checkPalindrone(input))
+            System.out.println("Palindrone");
+        else
+            System.out.println("Not Palindrone");
 
         sc.close();
     }
