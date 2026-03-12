@@ -8,20 +8,19 @@ interface PalindroneStrategy {
 }
 
 class StackStrategy implements PalindroneStrategy {
-
     @Override
     public boolean check(String input) {
         if (input == null) return false;
         String str = input.replaceAll("\\s+", "").toLowerCase();
+
         Stack<Character> stack = new Stack<>();
         for (char ch : str.toCharArray()) {
             stack.push(ch);
         }
         for (char ch : str.toCharArray()) {
-            if (ch != stack.pop()) {
-                return false;
-            }
+            if (ch != stack.pop()) return false;
         }
+
         return true;
     }
 }
@@ -30,41 +29,32 @@ class DequeStrategy implements PalindroneStrategy {
     @Override
     public boolean check(String input) {
         if (input == null) return false;
-
         String str = input.replaceAll("\\s+", "").toLowerCase();
-
         Deque<Character> deque = new LinkedList<>();
         for (char ch : str.toCharArray()) {
             deque.addLast(ch);
         }
 
         while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
-                return false;
-            }
+            if (deque.removeFirst() != deque.removeLast()) return false;
         }
+
         return true;
     }
 }
 
 class PalindroneChecker {
-
     private PalindroneStrategy strategy;
-
     public PalindroneChecker(PalindroneStrategy strategy) {
         this.strategy = strategy;
     }
-
     public void setStrategy(PalindroneStrategy strategy) {
         this.strategy = strategy;
     }
-
     public boolean checkPalindrone(String input) {
         return strategy.check(input);
     }
 }
-
-
 public class PalindroneCheckerApp {
 
     public static void main(String[] args) {
@@ -74,27 +64,24 @@ public class PalindroneCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        System.out.println("Choose algorithm: 1 = Stack, 2 = Deque");
-        int choice = sc.nextInt();
-        sc.nextLine();
+        PalindroneChecker stackChecker = new PalindroneChecker(new StackStrategy());
+        PalindroneChecker dequeChecker = new PalindroneChecker(new DequeStrategy());
 
-        PalindroneStrategy strategy;
+        long startStack = System.nanoTime();
+        boolean stackResult = stackChecker.checkPalindrone(input);
+        long endStack = System.nanoTime();
+        long stackTime = endStack - startStack;
 
-        if (choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
+        long startDeque = System.nanoTime();
+        boolean dequeResult = dequeChecker.checkPalindrone(input);
+        long endDeque = System.nanoTime();
+        long dequeTime = endDeque - startDeque;
 
-        PalindroneChecker checker = new PalindroneChecker(strategy);
-
-        boolean result = checker.checkPalindrone(input);
-
-        if (result) {
-            System.out.println("The given string \"" + input + "\" is a Palindrone (using chosen strategy).");
-        } else {
-            System.out.println("The given string \"" + input + "\" is NOT a Palindrone (using chosen strategy).");
-        }
+        System.out.println("\n=== Palindrone Check Results ===");
+        System.out.println("Using Stack Strategy: " + (stackResult ? "Palindrone" : "Not Palindrone") +
+                " | Time: " + stackTime + " ns");
+        System.out.println("Using Deque Strategy: " + (dequeResult ? "Palindrone" : "Not Palindrone") +
+                " | Time: " + dequeTime + " ns");
 
         sc.close();
     }
